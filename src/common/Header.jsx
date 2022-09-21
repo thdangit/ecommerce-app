@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useSelector } from "react";
+/* eslint-disable array-callback-return */
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { BiSearch } from "react-icons/bi";
 import { BsBagCheck } from "react-icons/bs";
@@ -9,16 +11,22 @@ import {
   AiOutlineClose,
   AiOutlineDelete,
 } from "react-icons/ai";
+import { connect, useDispatch, useSelector } from "react-redux";
 
 import logo from "../assets/images/logo.svg";
+import cartimg from "../assets/images/cart.png";
 import { navlist } from "../assets/data/data";
+import { DELETE } from "../redux/action";
+import { toast } from "react-toastify";
+
 function Header() {
   // navbar
   const [mobile, setMobile] = useState(false);
   // cartopen and close
   const [cartList, setCartList] = useState(false);
+  const dispatch = useDispatch();
 
-  const handleClose = () => {
+  const handleCloses = () => {
     setCartList(null);
   };
   // scroll navbar
@@ -28,8 +36,28 @@ function Header() {
   });
 
   // cart add in shop
+  const getDataCart = useSelector((state) => state.cartReducer.carts);
 
   // delete cart
+  const removeCart = (id) => {
+    dispatch(DELETE(id));
+    toast("Delete Cart Successful!");
+  };
+
+  // total prcie
+  const [price, setPrice] = useState(0);
+
+  const totals = () => {
+    let price = 0;
+    getDataCart.map((e) => {
+      price = parseFloat(e.price) * e.qty + price;
+    });
+    setPrice(price);
+  };
+
+  useEffect(() => {
+    totals();
+  }, [totals]);
 
   return (
     <>
@@ -37,7 +65,13 @@ function Header() {
         <div className="container">
           <nav>
             <div className="toggle">
-            <button onClick={() => setMobile(!mobile)}>{mobile ? <AiOutlineClose className='close heIcon' /> : <AiOutlineMenu className='open heIcon' />}</button>
+              <button onClick={() => setMobile(!mobile)}>
+                {mobile ? (
+                  <AiOutlineClose className="close heIcon" />
+                ) : (
+                  <AiOutlineMenu className="open heIcon" />
+                )}
+              </button>
             </div>
             <div className="left">
               <Link to="/">
@@ -66,10 +100,52 @@ function Header() {
             <div className="right_card">
               <button className="button" onClick={() => setCartList(!cartList)}>
                 <BsBagCheck className="shop heIcon" />
-                SHOP
-                <span> (0)</span>
+                MY CART ({getDataCart.length})
               </button>
-              <div className={cartList ? "showCart" : "hideCart"}></div>
+              <div className={cartList ? "showCart" : "hideCart"}>
+                {getDataCart.length ? (
+                  <section className="details">
+                    <div className="details_title">
+                      <h3>Photo</h3>
+                      <p>Product Name</p>
+                    </div>
+                    <div className="details_cart">
+                      {getDataCart.map((e, i) => (
+                        <div key={i} className="details_content">
+                          <div className="details_content_img">
+                            <Link to={`/cart/${e.id}`} onClick={handleCloses}>
+                              <img src={e.cover} alt="" />
+                            </Link>
+                          </div>
+                          <div className="details_content_detail">
+                            <div className="details_content_detail_price">
+                              <p>{e.title.slice(0, 20)}...</p>
+                              <p>Price : ${e.price}</p>
+                              <p>Quantity : {e.qty}</p>
+                            </div>
+                          </div>
+                          <div className="details_content_detail_icon">
+                            <i>
+                              <AiOutlineDelete
+                                onClick={() => removeCart(e.id)}
+                              />
+                            </i>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="details_total">
+                      <h4>Total : ${price}</h4>
+                      <button className="button">BUY</button>
+                    </div>
+                  </section>
+                ) : (
+                  <div className="empty">
+                    <p>Your cart is empty</p>
+                    <img src={cartimg} alt="" />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

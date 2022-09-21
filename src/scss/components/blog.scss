@@ -4,7 +4,14 @@
     .content {
       position: relative;
       button {
-        @include width(100px, 40px, linear-gradient(90deg, #ff4267 40%, #ff4b2e 100%), $white, 40px, none);
+        @include width(
+          100px,
+          40px,
+          linear-gradient(90deg, #ff4267 40%, #ff4b2e 100%),
+          $white,
+          40px,
+          none
+        );
         margin-bottom: $large;
       }
       img {
@@ -14,7 +21,7 @@
       }
 
       .text {
-        @include zindex(relative, 5);
+        @include zindex(absolute, 5);
         span {
           color: $primary;
           font-weight: bold;

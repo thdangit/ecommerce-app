@@ -1,15 +1,15 @@
 import React from "react";
 import { Heading } from "../common/Heading";
 
-function Contact() {
+function About() {
   return (
     <div>
       <Heading
-        title="Contact us"
+        title="About"
         desc="Latest marketplace news, success stories and tutorials."
       />
     </div>
   );
 }
 
-export default Contact;
+export default About;
