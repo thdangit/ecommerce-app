@@ -80,8 +80,11 @@ p {
     cursor: pointer;
     .img {
       position: relative;
+      height: 320px;
+      margin-bottom: 20px;
       img {
         @include width(100%, 100%, none, none, 20px, none);
+        object-fit: cover;
       }
     }
     h3 {

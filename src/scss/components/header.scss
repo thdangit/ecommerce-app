@@ -12,7 +12,7 @@ header {
     display: none;
   }
   .left {
-    @include pa_ma($sm 0 0 0, none);
+    @include pa_ma(0 0 0 0, none);
 
     img {
       width: 100px;

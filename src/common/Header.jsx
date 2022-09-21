@@ -37,14 +37,7 @@ function Header() {
         <div className="container">
           <nav>
             <div className="toggle">
-              <button>
-                menu
-                {/* {mobile ? (
-                  <AiOutlineClose className="close heIcon" />
-                ) : (
-                  <AiOutlineMenu className="open heIcon" />
-                )} */}
-              </button>
+            <button onClick={() => setMobile(!mobile)}>{mobile ? <AiOutlineClose className='close heIcon' /> : <AiOutlineMenu className='open heIcon' />}</button>
             </div>
             <div className="left">
               <Link to="/">
