@@ -13,13 +13,13 @@ import {
 } from "react-icons/ai";
 import { connect, useDispatch, useSelector } from "react-redux";
 
-import logo from "../assets/images/logo.svg";
+import logo from "../assets/images/logo2.png";
 import cartimg from "../assets/images/cart.png";
 import { navlist } from "../assets/data/data";
 import { DELETE } from "../redux/action";
 import { toast } from "react-toastify";
 
-function Header() {
+export const Header = () => {
   // navbar
   const [mobile, setMobile] = useState(false);
   // cartopen and close
@@ -152,6 +152,11 @@ function Header() {
       </header>
     </>
   );
-}
+};
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    amount: state.amount,
+  };
+};
+connect(mapStateToProps)(Header);
